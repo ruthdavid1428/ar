@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <!-- Stable A-Frame -->
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+
+
+
+</head>
+<body>
+  <script>
+    AFRAME.registerComponent('ar-logic',{
+            init: function(){
+                showMessage('ar-logic running');
+            },
+            tick : function(){
+              let cam = document.querySelector("#cam");
+              if(!cam){return;}
+              showMessage('cam detected');
+              let collision = cam.components.raycaster.getIntersection(this.el);
+              if(!collision){return;}
+              showMessage('Occured collision' + collision.point.x.toFixed(2) + " " + collision.point.z.toFixed(2));
+              let circle = document.querySelector("#circle");
+              circle.setAttribute('position', collision.point);
+            }
+  </script>
+<a-scene ar>
+  <a-camera id="cam">
+    <a-text id="hud"  
+       value="Testing Markerless"
+       position="0 -0.1 -0.25"
+       align="center"
+       wrap-count="800">
+      </a-text> 
+
+
+  </a-camera>
+  <a-ring
+          id="circle"
+          rotation="-90 0  0"
+          radius-inner="0.01"
+          radius-outer="0.02">
+        </a-ring>
+       <a-gltf-model id="box"
+        src="./"
+        scale="10 10 10"
+        position="0 0 0"></a-gltf-model>
+</a-scene>
+
+
+
+
+
+
+  
+</body>
+</html>
